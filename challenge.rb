@@ -2,6 +2,17 @@
 
 require 'json'
 
+# parse JSON files with error handling
+def parse_json_files(file_name)
+    JSON.parse(File.read(file_name))
+rescue Errno::ENOENT
+    puts "Error: File '#{file_name}' not found."
+    exit 1
+rescue JSON::ParserError
+    puts "Error: Invalid JSON in '#{file_name}'."
+    exit 1
+end
+
 # create user output
 def format_user(user, previous_balance, new_balance)
     "    #{user['last_name']}, #{user['first_name']}, #{user['email']}\n" \
@@ -9,12 +20,8 @@ def format_user(user, previous_balance, new_balance)
     "      New Token Balance #{new_balance}\n"
 end
 
-begin
-    # Load companies from JSON file
-    companies = JSON.parse(File.read('companies.json'))
-    # Load users from JSON file
-    users = JSON.parse(File.read('users.json'))
-
+# process data and create output
+def process_data(users, companies)
     output = ""
 
     # for each company (sorted by id):
@@ -55,6 +62,19 @@ begin
         output += not_emailed_users.join
         output += "    Total amount of top ups for #{company['name']}: #{total_top_up}\n\n"
     end
+
+    output
+end
+
+begin
+    # Load companies from JSON file
+    companies = parse_json_files('companies.json')
+    # Load users from JSON file
+    users = parse_json_files('users.json')
+
+    output = process_data(users, companies)
+
     # Write output to file
     File.write('output.txt', output)
+    puts "Processing finished. Output written to 'output.txt'"
 end
