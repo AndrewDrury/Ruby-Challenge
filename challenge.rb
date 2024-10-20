@@ -13,18 +13,18 @@ end
 
 # create user output
 def format_user(user, previous_balance, new_balance)
-    "    #{user['last_name']}, #{user['first_name']}, #{user['email']}\n" \
-    "      Previous Token Balance, #{previous_balance}\n" \
-    "      New Token Balance #{new_balance}\n"
+    "\t\t#{user['last_name']}, #{user['first_name']}, #{user['email']}\n" \
+    "\t\t  Previous Token Balance, #{previous_balance}\n" \
+    " \t\t  New Token Balance #{new_balance}\n"
 end
 
 # create company output
 def format_company_output(company, emailed_users, not_emailed_users, total_top_up)
-    output = "Company Id: #{company['id']}\n"
-    output += "Company Name: #{company['name']}\n"
-    output += "Users Emailed:\n#{emailed_users.join}"
-    output += "Users Not Emailed:\n#{not_emailed_users.join}"
-    output += "    Total amount of top ups for #{company['name']}: #{total_top_up}\n\n"
+    output = "\tCompany Id: #{company['id']}\n"
+    output += "\tCompany Name: #{company['name']}\n"
+    output += "\tUsers Emailed:\n#{emailed_users.join}"
+    output += "\tUsers Not Emailed:\n#{not_emailed_users.join}"
+    output += "\t\tTotal amount of top ups for #{company['name']}: #{total_top_up}\n\n"
     output
 end
 
